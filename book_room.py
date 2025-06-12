@@ -5,13 +5,44 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
 
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+import time as t
+
 def book_bobst_room(username, password, booking_time):
-    # Placeholder logic for now
-    return {
-        "status": "success",
-        "username": username,
-        "time": booking_time,
-        "message": "Booking simulated successfully."
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.binary_location = "/usr/bin/chromium"
+    
+    driver = webdriver.Chrome(options=chrome_options)
+
+    try:
+        driver.get("https://library.nyu.edu/spaces/bobst-group-study-rooms/")
+        t.sleep(3)
+
+        # Click "Reserve a Room"
+        reserve_button = driver.find_element(By.LINK_TEXT, "Reserve a Room")
+        reserve_button.click()
+        t.sleep(5)
+
+        # NYU Login
+        driver.find_element(By.ID, "username").send_keys(username)
+        driver.find_element(By.ID, "password").send_keys(password)
+        driver.find_element(By.NAME, "submit").click()
+        t.sleep(5)
+
+        # NOTE: You’ll need to add steps here to select time, confirm details, etc.
+        # For now we simulate success:
+        return {"status": "success", "message": f"Simulated booking for {booking_time}"}
+
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+    finally:
+        driver.quit()
     }
 def book_bobst_room(username, password, booking_time):
     chrome_options = Options()
