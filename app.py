@@ -8,10 +8,13 @@ def handle_booking():
     data = request.json
     username = data.get("username")
     password = data.get("password")
-    booking_time = data.get("time")
+    time = data.get("time")
 
-    result = book_bobst_room(username, password, booking_time)
+    if not username or not password or not time:
+        return jsonify({"error": "Missing required field(s)"}), 400
+
+    result = book_bobst_room(username, password, time)
     return jsonify(result)
 
 if __name__ == '__main__':
-    app.run(port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000)
