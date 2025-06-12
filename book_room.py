@@ -43,7 +43,7 @@ def book_bobst_room(username, password, booking_time):
 
     finally:
         driver.quit()
-    }
+    
 def book_bobst_room(username, password, booking_time):
     chrome_options = Options()
     chrome_options.add_argument("--headless")
